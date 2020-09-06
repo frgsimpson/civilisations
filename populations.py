@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.figure import Figure
 
-from alien_app.utils import scaled_lognormal_pdf
+from utils import scaled_lognormal_pdf
 
 N_POP_BINS = 20
 MIN_POP = 100

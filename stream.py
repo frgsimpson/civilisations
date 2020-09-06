@@ -4,9 +4,9 @@ the civilisation of the typical alien. """
 import numpy as np
 import streamlit as st
 
-from alien_app.alien_sampler import AlienSampler
-from alien_app.populations import make_population_figure, make_mass_figure
-from alien_app.utils import load_population_dict, load_mass_dict
+from alien_sampler import AlienSampler
+from populations import make_population_figure, make_mass_figure
+from utils import load_population_dict, load_mass_dict
 
 N_SAMPLES = 7  # How many random samples to display
 
