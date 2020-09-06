@@ -3,6 +3,7 @@ the civilisation of the typical alien. """
 
 import numpy as np
 import streamlit as st
+from PIL import Image
 
 from alien_sampler import AlienSampler
 from populations import make_population_figure, make_mass_figure
@@ -11,7 +12,7 @@ from utils import load_population_dict, load_mass_dict
 N_SAMPLES = 7  # How many random samples to display
 
 st.write("""
-# Population Selection
+# Cosmic Civilisations
 Illustrating the difference between a typical alien civilisation and 
 the civilisation of the typical alien.
 Select a distribution of populations and body sizes.
@@ -34,6 +35,11 @@ mass_correlation = -1. * mass_scaling  # Default negative correlation between po
 # One issue is that a priori we should guess that mass scales inv with population.
 # this isnt controlled by the correlation coefficient but how their variances are related in log space.
 
+# Galaxy image
+image = Image.open('galaxy.jpg')
+st.image(image, use_column_width=True)
+
+
 if st.button('Go'):
     population_mean = populations_dict[populations]
     pop_figure = make_population_figure(population_mean, log_population_variance)
@@ -47,19 +53,20 @@ if st.button('Go'):
     mass_figure = make_mass_figure(mean_mass, log_mass_variance, mass_correlation)
     st.write(mass_figure)
 
+
     # Get random samples
     sampler = AlienSampler(np.log(population_mean), log_population_variance, log_mean_mass, log_mass_variance, mass_correlation)
     civ_dataframe = sampler.make_dataframe(n_samples=N_SAMPLES)
     individuals_dataframe = sampler.make_dataframe(n_samples=N_SAMPLES, biased=True)
 
     st.write("""
-    # Examples of some random civilisations
+    # Examples of some civilisations
     """)
 
     st.table(civ_dataframe)
 
     st.write("""
-    # Examples of some civilisations where some random individuals live
+    # Examples of some civilisations where individuals typically live
     """)
 
     st.table(individuals_dataframe)
