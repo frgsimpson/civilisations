@@ -15,7 +15,6 @@ st.write("""
 # Cosmic Civilisations
 Illustrating the difference between a typical alien civilisation and 
 the civilisation of the typical alien.
-Select a distribution of populations and body sizes.
 """)
 
 populations_dict = load_population_dict()
@@ -24,8 +23,14 @@ mass_dict = load_mass_dict()
 pop_options = list(populations_dict.keys())
 mass_options = list(mass_dict.keys())
 
+st.sidebar.write("Select a distribution of populations and body sizes.")
+st.sidebar.write("Population settings")
+
 populations = st.sidebar.select_slider("Typical population", options=pop_options, value='One million', key='pop')  # min max value step
 log_population_variance = st.sidebar.slider(label="Spread in population of alien species", min_value=1., max_value=25., value=10., step=0.1)
+
+
+st.sidebar.write("Mass settings")
 
 mean_mass = st.sidebar.select_slider("Typical alien size (kg)", options=mass_options, value='Human (70 kg)', key='pop')  # min max value step
 log_mass_variance = st.sidebar.slider(label="Spread in size of alien species", min_value=1., max_value=15., value=5., step=0.1)
