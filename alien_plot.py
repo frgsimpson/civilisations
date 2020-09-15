@@ -18,8 +18,15 @@ def alien_array_plot(heights, secondary_heights, images=None, spacing: float = 0
         alien_image = plt.imread(ALIEN_FILENAME, format='RGBA')
         images = [alien_image for _ in heights]
         alt_img = np.copy(alien_image)
-        white_bits = alt_img[:, :, 1] > 200
-        alt_img[:, :, 0] = 230  # Set red channel high everywhere
+
+        max_val = np.max(alt_img.flatten())
+        if max_val > 10:
+            white_bits = alt_img[:, :, 1] > 200
+            alt_img[:, :, 0] = 230  # Set red channel high everywhere
+        else:
+            white_bits = alt_img[:, :, 1] == 1.
+            alt_img[:, :, 0] = 0.9  # Set red channel high everywhere
+
         alt_img[:, :, -1][white_bits] = 0.  # Invoke transparant background for foreground image
 
         alt_images = [alt_img for _ in heights]
