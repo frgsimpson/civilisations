@@ -5,17 +5,19 @@ from matplotlib.figure import Figure
 import numpy as np
 
 ALIEN_FILENAME = './assets/human.png'
+FIGURE_WIDTH = 10
+FIGURE_HEIGHT = 3
 
 
 def alien_array_plot(heights, secondary_heights, images=None, spacing: float = 0.) -> Figure:
     """
     Generate a figure demonstrating the size distribution of aliens and alien species.
     """
-    fig, ax = plt.subplots(1, 1, figsize=(16, 4))
+    fig, ax = plt.subplots(1, 1, figsize=(FIGURE_WIDTH, FIGURE_HEIGHT))
     prev_image_ends = 0
 
     if images is None:
-        alien_image = plt.imread(ALIEN_FILENAME, format='RGBA')
+        alien_image = plt.imread(ALIEN_FILENAME, format='RGBA').copy()
         images = [alien_image for _ in heights]
         alt_img = np.copy(alien_image)
 
@@ -27,6 +29,7 @@ def alien_array_plot(heights, secondary_heights, images=None, spacing: float = 0
             white_bits = alt_img[:, :, 1] == 1.
             alt_img[:, :, 0] = 0.9  # Set red channel high everywhere
 
+        alien_image[:, :, -1][white_bits] = 0.  # Invoke transparant background for background image
         alt_img[:, :, -1][white_bits] = 0.  # Invoke transparant background for foreground image
 
         alt_images = [alt_img for _ in heights]
@@ -49,7 +52,7 @@ def alien_array_plot(heights, secondary_heights, images=None, spacing: float = 0
 
         ax.imshow(alt_img, extent=[alt_left, alt_right, 0, alt_height])
 
-        prev_image_ends += spacing + width
+        prev_image_ends += spacing
 
     x_centres = np.stack(centres)
     ax.set_xticks(x_centres)
@@ -58,7 +61,9 @@ def alien_array_plot(heights, secondary_heights, images=None, spacing: float = 0
 
     # Set x,y limits on plot window
     plt.xlim(0, right)
-    plt.ylim(0, max(secondary_heights)*1.05)
+
+    median_species_height = heights[4]
+    plt.ylim(0, median_species_height * 1.5)
 
     plt.box(on=None)
     return fig
